@@ -52,7 +52,7 @@ def get_sensor_data():
                 print(f"Error reading {key} from Modbus.")
                 continue
             # Convert registers to float32
-            data[key] = convert_registers_to_float32(response.registers)
+            data[key] = response.registers
     except Exception as e:
         print(f"Error during Modbus read: {e}")
     finally:
@@ -65,7 +65,9 @@ def loop():
     while True:
         #data = get_sensor_data()
         #print(f"Sensor Data: {data}")
-        data = {"VOLTAGE":[11],"FREQUENCY":[11]}
+        data = {"VOLTAGE":[49709, 17262],"FREQUENCY":[54339, 16973]}
+        for key in data.keys():
+            data[key]=convert_registers_to_float32(data[key])
         response = send_to_server(data)
         
         if not response:
